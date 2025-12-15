@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Cryptinity Wallet</title>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+  <script src="https://unpkg.com/@solana/spl-token@latest/lib/index.iife.js"></script>
+  <style>
+    body {
+      background: black;
+      color: #00FF99;
+      font-family: Arial;
+      text-align: center;
+      padding: 20px;
+    }
+    button {
+      background: #00FF99;
+      color: black;
+      border: none;
+      padding: 12px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Cryptinity Wallet</h2>
+  <p id="status">Not connected</p>
+
+  <button onclick="connectWallet()">Connect Phantom</button>
+  <button onclick="sendCTY()">Send 1 CTY</button>
+
+<script>
+let wallet = null;
+
+async function connectWallet() {
+  if (window.solana && window.solana.isPhantom) {
+    const res = await window.solana.connect();
+    wallet = res.publicKey.toString();
+    document.getElementById("status").innerText =
+      "Connected: " + wallet.slice(0,6) + "...";
+
+    // Send wallet back to parent (Anything/Wix)
+    window.parent.postMessage({
+      type: "WALLET_CONNECTED",
+      address: wallet
+    }, "*");
+  } else {
+    alert("Phantom Wallet not found");
+  }
+}
+
+async function sendCTY() {
+  alert("CTY transfer logic placeholder.\nHook SPL token here later.");
+}
+</script>
+
+</body>
+</html>
